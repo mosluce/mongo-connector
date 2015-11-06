@@ -32,13 +32,10 @@ module.exports = function (Schema) {
 
 ## API
 - .connect(dbName, url) : 連線到資料庫
-
-return: Promise -> resolve(conn), reject(error)
-
+> return: Promise -> resolve(conn), reject(error)
+   
 - .register(dbName, dir) : 註冊 Model
-
-return: Promise, fullfill(), reject(error)
+> return: Promise, fullfill(), reject(error)
 
 - .getMiddleware(dbName, url) : 連線(使用 middleware 方式)
-
-return: middleware
+> return: middleware
