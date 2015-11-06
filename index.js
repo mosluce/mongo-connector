@@ -93,7 +93,7 @@ function register(dbName, dir) {
                 conn.model(cfg.table, schema);
             }
 
-            resolve();
+            resolve(conn.models);
         });
     });
 }
