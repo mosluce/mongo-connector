@@ -23,7 +23,7 @@ module.exports = function (Schema) {
 ```
 
 ```
-欄位行別可參考 http://mongoosejs.com/docs/guide.html
+欄位型別可參考 http://mongoosejs.com/docs/guide.html
 ```
 
 ## 環境變數
