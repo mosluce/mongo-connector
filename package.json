@@ -1,7 +1,7 @@
 {
   "name": "mongo-connector",
-  "version": "0.0.1",
-  "description": "Mongoose connection singleton by same name",
+  "version": "0.0.2",
+  "description": "Mongoose 連線流程簡化",
   "main": "index.js",
   "scripts": {},
   "author": "mosluce<mosluce@gmail.com>",

@@ -29,3 +29,8 @@ module.exports = function (Schema) {
 ## 環境變數
 - MODEL_DIR: 主要放置 Model 的資料夾，會在連線完成後自動載入這些 Model
 - MONGO_URL: 主要連線 URL
+
+## API
+- .connect(dbName, url) : 連線到資料庫
+- .register(dbName, dir) : 註冊 Model
+- .getMiddleware(dbName, url) : 連線(使用 middleware 方式)

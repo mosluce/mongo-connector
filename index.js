@@ -34,9 +34,13 @@ function connect(dbName, url) {
 
             global.mongoConnector.connections[dbName] = conn;
 
-            register(dbName, '*').then(function() {
+            if (dbName === 'main') {
+                register().then(function () {
+                    resolve(conn);
+                }, reject);
+            } else {
                 resolve(conn);
-            }, reject);
+            }
         });
 
         conn.on('error', function (err) {
@@ -63,45 +67,45 @@ function connect(dbName, url) {
     });
 }
 
-function register(dbName, models, dir) {
+function register(dbName, dir) {
+    dbName = dbName || 'main';
+    dir = dir || MODEL_DIR;
+
     var conn = global.mongoConnector.connections[dbName];
 
     if (!conn) return Promise.reject({message: 'connection is not exists'});
 
-    if (models instanceof Array || models === '*') {
-        return new Promise(function (resolve, reject) {
-            dir = dir || MODEL_DIR;
+    return new Promise(function (resolve, reject) {
+        fs.readdir(dir, function (err, files) {
+            if (err) return reject(err);
 
-            fs.readdir(dir, function (err, files) {
-                if (err) return reject(err);
+            for (var i in files) {
+                var file = files[i];
 
-                for (var i in files) {
-                    var file = files[i];
+                if (file === 'index.js') continue;
+                if (!/\.js$/.test(file)) continue;
 
-                    if (file === 'index.js') continue;
-                    if (!/\.js$/.test(file)) continue;
+                var cfg = require(path.join(dir, file))(Schema);
+                var schema = new Schema(cfg.schema);
 
-                    var cfg = require(path.join(dir, file))(Schema);
-                    var schema = new Schema(cfg.schema);
+                schema.plugin(timestamps);
 
-                    schema.plugin(timestamps);
+                conn.model(cfg.table, schema);
+            }
 
-                    conn.model(cfg.table, schema);
-                }
-
-                resolve();
-            });
+            resolve();
         });
-    } else {
-        return Promise.reject({message: 'models must be an array'})
-    }
+    });
 }
 
-function connection(dbName) {
-    dbName = dbName || 'main';
-    return global.mongoConnector.connections[dbName];
+function getMiddleware(dbName, url) {
+    return function (req, res, next) {
+        connect(dbName, url).then(function () {
+            next();
+        }, next);
+    }
 }
 
 exports.connect = connect;
 exports.register = register;
-exports.connection = connection;
+exports.getMiddleware = getMiddleware;
