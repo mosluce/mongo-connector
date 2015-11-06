@@ -35,7 +35,7 @@ module.exports = function (Schema) {
 > return: Promise -> resolve(conn), reject(error)
    
 - .register(dbName, dir) : 註冊 Model
-> return: Promise, fullfill(models), reject(error)
+> return: Promise, resolve(models), reject(error)
 
 - .getMiddleware(dbName, url) : 連線(使用 middleware 方式)
 > return: middleware
