@@ -86,6 +86,9 @@ function register(dbName, dir) {
                 if (!/\.js$/.test(file)) continue;
 
                 var cfg = require(path.join(dir, file))(Schema);
+
+                if(conn.models[cfg.table]) continue;
+
                 var schema = new Schema(cfg.schema);
 
                 schema.plugin(timestamps);
